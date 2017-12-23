@@ -1,0 +1,64 @@
+resources:
+- name: every-10s
+  type: time
+  source: {interval: 10s}
+
+- name: every-10s-2
+  type: time
+  source: {interval: 10s}
+
+jobs:
+- name: myNavi
+  plan:
+  - get: every-10s
+    trigger: true
+  - task: annoy
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hey! Listen!"]
+  - put: every-10s
+
+  - get: every-10s-2
+    trigger: true
+  - task: annoy
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hey! Listen!"]
+  - put: every-10s-2
+
+- name: myNavi2
+  plan:
+  - get: every-10s
+  - task: annoy2
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hey! Listen!"]
+
+- name: myNavi3
+  plan:
+  - get: every-10s
+    trigger: true
+  - task: annoy
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      run:
+        path: echo
+        args: ["Hey! Listen!"]
